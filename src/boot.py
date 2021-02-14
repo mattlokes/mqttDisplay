@@ -9,6 +9,8 @@ esp.osdebug(None)
 import gc
 gc.collect()
 
+from neopixel import NeoPixel
+
 ssid = 'echoAP'
 password = 'M0nkeyM0nkey'
 mqtt_server = '192.168.30.194'
