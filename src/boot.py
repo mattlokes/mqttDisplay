@@ -11,14 +11,9 @@ gc.collect()
 
 ssid = 'echoAP'
 password = 'M0nkeyM0nkey'
-mqtt_server = '192.168.30.195'
+mqtt_server = '192.168.30.194'
 
 client_id = ubinascii.hexlify(machine.unique_id())
-topic_sub = b'evchargers/sommers_rd_0/state'
-
-last_message = 0
-message_interval = 5
-counter = 0
 
 station = network.WLAN(network.STA_IF)
 
