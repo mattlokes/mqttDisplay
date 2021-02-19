@@ -6,24 +6,19 @@ sommers_rd_0_avail = False
 sommers_rd_1_avail = False
 tesla_battery      = 0
 
-buff = None
-
-def init_display(size=256):
-  global buff
-  buff = NeoPixel(machine.Pin(14, machine.Pin.OUT), size)
-  for i in range(size):
-      buff[i] = (0,0,0)
-  buff.write()
-
 def sub_cb(topic, msg):
-  global sommers_rd_0_avail, sommers_rd_1_avail, tesla_battery
+  global sommers_rd_0_avail, sommers_rd_1_avail, tesla_battery, disp
   if b'sommers_rd_0' in topic:
       sommers_rd_0_avail = msg == b'Available'
   if b'sommers_rd_1' in topic:
       sommers_rd_1_avail = msg == b'Available'
   if b'usable_battery_level' in topic:
       tesla_battery = int(msg)
+      disp.clear()
+      disp.text(2,0,str(tesla_battery)+"%", 1, (1,1,1))
+      disp.write()
   print("Sommers Rd 0 Availabe: {}\nSommers Rd 1 Available:{}\nTesla Battery: {}\%".format(sommers_rd_0_avail, sommers_rd_1_avail, tesla_battery))
+
 
 def connect_and_subscribe():
   global client_id, mqtt_server, topic_subs
@@ -45,20 +40,9 @@ try:
 except OSError as e:
   restart_and_reconnect()
 
-init_display()
-
 while True:
   try:
-    #color = [(32,0,0), (0,32,0), (0,0,32), (32,32,0), (32,0,32),(0,32,32), (32,32,32)]
-    #color = [(8,0,0), (0,8,0), (0,0,8), (8,8,0), (8,0,8),(0,8,8), (8,8,8)]
-    #color = [(3,0,0), (0,3,0), (0,0,3), (3,3,0), (3,0,3),(0,3,3), (3,3,3)]
-    color = [(1,0,0), (0,1,0), (0,0,1), (1,1,0), (1,0,1),(0,1,1), (1,1,1)]
-    for c in color:
-        client.check_msg()
-        for i in range(buff.n):
-            buff[i] = c
-            buff.write()
-            time.sleep(0.015)
-
+    time.sleep(0.015)
+    client.check_msg()
   except OSError as e:
     restart_and_reconnect()

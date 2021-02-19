@@ -1,5 +1,5 @@
 import time
-from umqttsimple import MQTTClient
+import math
 import ubinascii
 import machine
 import micropython
@@ -9,7 +9,8 @@ esp.osdebug(None)
 import gc
 gc.collect()
 
-from neopixel import NeoPixel
+from umqttsimple.umqttsimple import MQTTClient
+from display import *
 
 ssid = 'echoAP'
 password = 'M0nkeyM0nkey'
@@ -21,6 +22,8 @@ station = network.WLAN(network.STA_IF)
 
 station.active(True)
 station.connect(ssid, password)
+
+disp = Display(machine.Pin(14, machine.Pin.OUT), columns=4, rows=1)
 
 while station.isconnected() == False:
   pass

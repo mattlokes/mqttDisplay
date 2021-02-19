@@ -1,1 +1,3 @@
 micropython
+*/__pycache__
+*.swp

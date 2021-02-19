@@ -30,18 +30,34 @@ esp32-init: esp32-erase esp32-flash-micropy
 # MQTT DISPLAY MICROPYTHON TARGETS
 # ####################################################################################3
 
+
+.PHONY: upload-python-main
+upload-python-main:
+	@echo "`tput setaf 2`[MQTTDISP]: Uploading Python Main/Boot/Display Src...`tput sgr0`" 
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/main.py
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/boot.py
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/display.py
+
+.PHONY: upload-python-umqttsimple 
+upload-python-umqttsimple:
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/umqttsimple
+
+.PHONY: upload-python-neopixelpanel 
+upload-python-neopixelpanel:
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/NeoPixelPanel
+
+.PHONY: upload-python-adafruitgfx
+upload-python-adafruitgfx:
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/Adafruit_GenericPython_GFX/adafruit_gfx 
+
 .PHONY: upload-python
-upload-python:
-	@echo "`tput setaf 2`[MQTTDISP]: Uploading Python Src...`tput sgr0`" 
-	ls -1 $(MQTTDISP_ROOT)/src/*.py | xargs -I%  bash -c "echo '%'; ampy --port $(MQTTDISP_TTY) put %"
+upload-python: upload-python-main upload-python-umqttsimple upload-python-neopixelpanel upload-python-adafruitgfx
 	ampy --port $(MQTTDISP_TTY) ls -l 
 
 .PHONY: attach
 attach:
 	screen -R -S mqttdisplay  $(MQTTDISP_TTY) $(MQTTDISP_BAUD)
 
-
 .PHONY: clean
 clean:
 	rm -rf $(MQTTDISP_MICROPY_FW_PATH)
-#
