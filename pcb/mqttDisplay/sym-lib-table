@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name eec)(type Legacy)(uri /Users/matt/Projects/mqttDisplay/pcb/IC_STMicroelectronics_MP34DT05TR-A/eec.lib)(options "")(descr ""))
+  (lib (name 3340_kicad)(type Legacy)(uri /Users/matt/Projects/mqttDisplay/pcb/3340_kicad/3340_kicad.lib)(options "")(descr ""))
+)
