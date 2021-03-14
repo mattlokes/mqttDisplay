@@ -1,3 +1,10 @@
 micropython
 */__pycache__
 *.swp
+*.pyc
+*-bak
+_autosave-*
+.DS_Store
+pcb/3340_kicad
+pcb/IC_STMicroelectronics_MP34DT05TR-A
+pcb/mqttDisplay/gerber.zip
