@@ -15,7 +15,7 @@ def sub_cb(topic, msg):
   if b'usable_battery_level' in topic:
       tesla_battery = int(msg)
       disp.clear()
-      disp.text(2,0,str(tesla_battery)+"%", 1, (1,1,1))
+      disp.text(4,0,str(tesla_battery)+"%", 1, (128,128,128,0.2))
       disp.write()
   print("Sommers Rd 0 Availabe: {}\nSommers Rd 1 Available:{}\nTesla Battery: {}\%".format(sommers_rd_0_avail, sommers_rd_1_avail, tesla_battery))
 

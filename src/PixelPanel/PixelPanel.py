@@ -32,14 +32,16 @@ class DebugBuffer(list):
                         off += self.panNum-self.panSize[0]
                 print(rStr)    
 
-class NeoPixelPanel():
-    ''' NeoPixelPanel object, takes:
-          pin        - GPIO pin used to drive the NeoPixels
+class PixelPanel():
+    ''' PixelPanel object, takes:
+          pin/pins   - GPIO pin used to drive the Pixels
+          mode       - Type of pixel to drive, APA102 or NeoPixel         [Default:APA102] 
           columns    - The number of LED Panel columns                    [Default:1]
           rows       - The number of LED Panel rows                       [Default:1] 
           panel_size - A list containing the number of pixels in a panel, [Default:(8,8)]
     '''
     def __init__(self,pin, **kwargs ):
+        self.mode              = kwargs.get('mode'      , 'APA102' )
         self.panColumns        = kwargs.get('columns'   , 1)
         self.panRows           = kwargs.get('rows'      , 1)
         self.panSize           = kwargs.get('panel_size', (8,8) )
@@ -50,16 +52,15 @@ class NeoPixelPanel():
 
         self.__size__          = self.width * self.height
         
-
-        if not kwargs.get('debug', False):
-            from neopixel import NeoPixel
-            __buffClass__  = NeoPixel
-            __buffKwargs__ = {}
+        if kwargs.get('debug', False):
+             self.__buff__  = DebugBuffer(pin, self.__size__, **__kwargs__)
+        elif self.mode == 'APA102':
+            from micropython_dotstar import DotStar
+            self.__buff__   = DotStar(pin, self.__size__, auto_write=False)
         else:
-            __buffClass__  = DebugBuffer
-            __buffKwargs__ = kwargs
+            from neopixel import NeoPixel
+            self.__buff__   = NeoPixel(pin, self.__size__)
 
-        self.__buff__ = __buffClass__(pin, self.__size__, **__buffKwargs__)
         self.clear()
 
         #Pre calculate panel offsets nad intra panel Y offsets to save repeated maths later
@@ -114,10 +115,15 @@ class NeoPixelPanel():
     
     ''' Clear the entire display '''
     def clear(self):
+        col = (0,0,0,0) if self.mode == 'APA102' else (0,0,0)
         for i in range(self.__size__):
-            self.__buff__[i] = (0,0,0)
+            self.__buff__[i] = col
         self.write()
 
     ''' Write the entire display '''
     def write(self):
-        self.__buff__.write()
+        if self.mode == 'APA102':
+            if self.__buff__.auto_write: return #If autowrite enabled skip function call 
+            self.__buff__.show()
+        else :
+            self.__buff__.write()

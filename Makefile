@@ -35,23 +35,27 @@ esp32-init: esp32-erase esp32-flash-micropy
 upload-python-main:
 	@echo "`tput setaf 2`[MQTTDISP]: Uploading Python Main/Boot/Display Src...`tput sgr0`" 
 	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/main.py
-	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/boot.py
 	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/display.py
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/boot.py
 
 .PHONY: upload-python-umqttsimple 
 upload-python-umqttsimple:
 	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/umqttsimple
 
-.PHONY: upload-python-neopixelpanel 
-upload-python-neopixelpanel:
-	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/NeoPixelPanel
+.PHONY: upload-python-pixelpanel 
+upload-python-pixelpanel:
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/PixelPanel
 
 .PHONY: upload-python-adafruitgfx
 upload-python-adafruitgfx:
 	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/Adafruit_GenericPython_GFX/adafruit_gfx 
 
+.PHONY: upload-python-adafruitdotstar
+upload-python-adafruitdotstar:
+	ampy --port $(MQTTDISP_TTY) put $(MQTTDISP_ROOT)/src/Adafruit_GenericPython_Dotstar/micropython_dotstar.py
+
 .PHONY: upload-python
-upload-python: upload-python-main upload-python-umqttsimple upload-python-neopixelpanel upload-python-adafruitgfx
+upload-python: upload-python-umqttsimple upload-python-pixelpanel upload-python-adafruitgfx upload-python-adafruitdotstar upload-python-main 
 	ampy --port $(MQTTDISP_TTY) ls -l 
 
 .PHONY: attach

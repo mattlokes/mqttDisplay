@@ -1,3 +1,6 @@
 [submodule "src/Adafruit_GenericPython_GFX"]
 	path = src/Adafruit_GenericPython_GFX
 	url = https://github.com/mattlokes/Adafruit_GenericPython_GFX
+[submodule "src/Adafruit_GenericPython_Dotstar"]
+	path = src/Adafruit_GenericPython_Dotstar
+	url = https://github.com/mattytrentini/micropython-dotstar.git

@@ -23,7 +23,9 @@ station = network.WLAN(network.STA_IF)
 station.active(True)
 station.connect(ssid, password)
 
-disp = Display(machine.Pin(14, machine.Pin.OUT), columns=4, rows=1)
+
+vspi = machine.SPI(2, baudrate=20000000, polarity=0, phase=0, bits=8, firstbit=0, sck=machine.Pin(18), mosi=machine.Pin(23), miso=machine.Pin(19))
+disp = Display( vspi , columns=4, rows=2, mode='APA102')
 
 while station.isconnected() == False:
   pass
