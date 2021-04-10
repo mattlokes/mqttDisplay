@@ -11,10 +11,10 @@ gc.collect()
 
 from umqttsimple.umqttsimple import MQTTClient
 from display import *
+from view    import *
 
 ssid = 'echoAP'
 password = 'M0nkeyM0nkey'
-mqtt_server = '192.168.30.194'
 
 client_id = ubinascii.hexlify(machine.unique_id())
 

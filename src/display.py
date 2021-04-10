@@ -13,6 +13,15 @@ class Display( GFX ):
                           pixel  = self.pp.pixel,
                           vline  = self.pp.vline,
                           hline  = self.pp.hline)
+
+    @property
+    def brightness(self):
+        return self.pp.brightness
+
+    @brightness.setter
+    def brightness(self, brightness):
+        self.pp.brightness = brightness
+
     def write(self):
         self.pp.write()
 
@@ -34,6 +43,8 @@ class AnimationBuffer():
     
     def clear(self):
         self.__queue__ = []
+        self.__disp__.clear()
+        self.__disp__.write()
 
     def create_frame(self):
         return AnimationFrame(self.__disp__)
@@ -72,4 +83,5 @@ class AnimationFrame():
     def fill_round_rect     (self, *args, **kwargs): self.__cmds__ += [(self.__disp__.fill_round_rect,     args, kwargs)]
     def set_text_background (self, *args, **kwargs): self.__cmds__ += [(self.__disp__.set_text_background, args, kwargs)]
     def text                (self, *args, **kwargs): self.__cmds__ += [(self.__disp__.text,                args, kwargs)]
+    def clear               (self, *args, **kwargs): self.__cmds__ += [(self.__disp__.brightness,          args, kwargs)]
     def clear               (self, *args, **kwargs): self.__cmds__ += [(self.__disp__.clear,               args, kwargs)]

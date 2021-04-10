@@ -45,6 +45,7 @@ class PixelPanel():
         self.panColumns        = kwargs.get('columns'   , 1)
         self.panRows           = kwargs.get('rows'      , 1)
         self.panSize           = kwargs.get('panel_size', (8,8) )
+        self.brightness        = kwargs.get('brightness', 0.03 )
         self.panNum            = self.panSize[0] * self.panSize[1]
 
         self.width             = (self.panColumns * self.panSize[0])
@@ -81,6 +82,14 @@ class PixelPanel():
         self.__yDivShift__ = int(math.log(self.panSize[1],2))
         self.__yModMask__  = self.panSize[1] -1
 
+    @property
+    def brightness(self):
+        """Overall brightness of the pixel"""
+        return self.__buff__.brightness
+
+    @brightness.setter
+    def brightness(self, brightness):
+        self.__buff__.brightness = brightness
 
     ''' Translate and x,y coord to a linar pixel num '''
     def __transXY__(self, x, y):
@@ -114,11 +123,10 @@ class PixelPanel():
         
     
     ''' Clear the entire display '''
-    def clear(self):
+    def clear(self,):
         col = (0,0,0,0) if self.mode == 'APA102' else (0,0,0)
         for i in range(self.__size__):
             self.__buff__[i] = col
-        self.write()
 
     ''' Write the entire display '''
     def write(self):
