@@ -9,7 +9,6 @@ esp.osdebug(None)
 import gc
 gc.collect()
 
-from umqttsimple.umqttsimple import MQTTClient
 from pixelpanel.display import *
 
 ssid = 'echoAP'

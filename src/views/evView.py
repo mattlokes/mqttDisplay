@@ -2,10 +2,11 @@
 #    sommers_rd_0_avail = msg == b'Available'
 #if b'sommers_rd_1' in topic:
 #    sommers_rd_1_avail = msg == b'Available'
+from views.view import *
 
 class evView(timerView):
     def __init__(self, disp, *args, **kwargs):
-        super().__init__(self, disp, *args, **kwargs)
+        super().__init__(disp, *args, **kwargs)
         self.__battery_level__ = None
 
     def __tick__(self):
@@ -28,9 +29,9 @@ class evView(timerView):
         if self.__battery_level__ is None:
             frm.text(4,0,"--%", 1, (128,128,128))
         else:
-            if self.__battery_level__ >= 0:  gauge_color = (128,128,0) # Red
+            if self.__battery_level__ >= 0:  gauge_color = (128,0,0) # Red
             if self.__battery_level__ >= 15: gauge_color = (128,128,0) # Yellow
-            if self.__battery_level__ >= 50: guage_color = (0,128,0)   # Green
+            if self.__battery_level__ >= 50: gauge_color = (0,128,0)   # Green
             
             # Battery Level and Fill Draw
             frm.text(4,0,str(self.__battery_level__)+"%", 1, (128,128,128))

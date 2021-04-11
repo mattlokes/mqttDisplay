@@ -45,9 +45,9 @@ class PixelPanel():
         self.panColumns        = kwargs.get('columns'   , 1)
         self.panRows           = kwargs.get('rows'      , 1)
         self.panSize           = kwargs.get('panel_size', (8,8) )
-        self.brightness        = kwargs.get('brightness', 0.03 )
-        self.panNum            = self.panSize[0] * self.panSize[1]
+        brightness             = kwargs.get('brightness', 0.03 )
 
+        self.panNum            = self.panSize[0] * self.panSize[1]
         self.width             = (self.panColumns * self.panSize[0])
         self.height            = (self.panRows * self.panSize[1])
 
@@ -56,11 +56,13 @@ class PixelPanel():
         if kwargs.get('debug', False):
              self.__buff__  = DebugBuffer(pin, self.__size__, **__kwargs__)
         elif self.mode == 'APA102':
-            from ..adafruitdostar.micropython_dotstar import DotStar
+            from adafruitdotstar.micropython_dotstar import DotStar
             self.__buff__   = DotStar(pin, self.__size__, auto_write=False)
         else:
             from neopixel import NeoPixel
             self.__buff__   = NeoPixel(pin, self.__size__)
+
+        self.brightness = brightness
 
         self.clear()
 

@@ -1,3 +1,6 @@
+import machine
+from umqttsimple.umqttsimple import MQTTClient
+
 ''' View Base Class '''
 class view():
     def __init__(self, disp, *args, **kwargs):
@@ -12,7 +15,7 @@ class view():
 
     def activate(self):
         self.__active__ = True
-        disp.clear()
+        self.disp.clear()
         self.update()
     
     def deactivate(self):
@@ -27,13 +30,13 @@ class view():
 
 class timerView(view):
     def __init__(self, disp, *args, **kwargs):
-        super().__init__(self, disp, *args, **kwargs)
-        self.__duration__ms__ =  kwargs.get('duration_ms', 10000)
+        super().__init__(disp, *args, **kwargs)
+        self.__duration_ms__ =  kwargs.get('duration_ms', 10000)
 
 class eventView(view):
     def __init__(self, disp, *args, **kwargs):
-        super().__init__(self, disp, *args, **kwargs)
-        self.__duration__ms__ =  None
+        super().__init__(disp, *args, **kwargs)
+        self.__duration_ms__ =  None
 
 class viewControl():
     def __init__(self, *args, **kwargs):
@@ -47,8 +50,10 @@ class viewControl():
         self.__event_views__    = []
         self.__subscriptions__  = {}
         self.__timer__  = machine.Timer(1)
+        print("clientid: {}".format(self.__client_id__))
         self.__mqtt__ = MQTTClient(self.__client_id__, self.__mqtt_broker__)
-        self.__mqtt__.set_callback(self.__mqtt_callback__)
+        self.__mqtt__.set_callback(lambda t,m: self.__mqtt_callback__(t,m))
+        self.__mqtt__.connect()
 
     def __mqtt_callback__(self, topic, msg):
         if topic not in self.__subscriptions__: raise Exception("Got a message for topic '{}' but somehow we arent subscribed to it....".format(topic))
@@ -62,9 +67,9 @@ class viewControl():
 
     def __view_rrb__(self):
         self.__timer_view_dur__ -= self.__period_ms__
-        if self.__timer_view_dur <= 0:
+        if self.__timer_view_dur__ <= 0:
             if self.__timer_view_ptr__ == len(self.__timer_views__)-1: rrb_ptr = 0
-            else:                                                      rrb_ptr = self.__timer_view_ptr += 1
+            else:                                                      rrb_ptr = self.__timer_view_ptr + 1
             if rrb_ptr != self.__timer_view_ptr__:
                 self.__view_switch__(rrb_ptr)
                 return True
@@ -95,9 +100,15 @@ class viewControl():
         if isinstance(view, eventView): self.__event_views__ += [view]
 
         #register view subscriptions
-        for topic, cbs in view.subscriptions():
-            if topic in self.__subscriptions__: self.__subscriptions__[topic].extend(cbs if isinstance(cbs,list) else [cbs])
-            self.__subscriptions__[topic] = cbs if isinstance(cbs, list) else [cbs]
+        for topic, cbs in view.subscriptions().items():
+            if topic in self.__subscriptions__: 
+                self.__subscriptions__[topic].extend(cbs if isinstance(cbs,list) else [cbs])
+            else:
+                self.__subscriptions__[topic] = cbs if isinstance(cbs, list) else [cbs]
+                self.__mqtt__.subscribe(topic)
+                self.__mqtt__.subscribe(topic)
+                print("subscribed too: {}".format(topic))
+
 
     def start(self):
         try:

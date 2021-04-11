@@ -83,7 +83,7 @@ class GFX:
             self.text = self._very_slow_text
             # if no supplied font set to std
             if font is None:
-                from adafruit_gfx.fonts.gfx_standard_font_01 import (  # pylint: disable=import-outside-toplevel
+                from adafruitgfx.fonts.gfx_standard_font_01 import (  # pylint: disable=import-outside-toplevel
                     text_dict as std_font,
                 )
 

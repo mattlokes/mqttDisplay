@@ -1,7 +1,7 @@
 import sys
 
-from PixelPanel import *
-from ..adafruitgfx.gfx import *
+from pixelpanel.PixelPanel import *
+from adafruitgfx.gfx import *
 
 import machine
 
