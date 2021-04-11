@@ -69,7 +69,7 @@ class viewControl():
         self.__timer_view_dur__ -= self.__period_ms__
         if self.__timer_view_dur__ <= 0:
             if self.__timer_view_ptr__ == len(self.__timer_views__)-1: rrb_ptr = 0
-            else:                                                      rrb_ptr = self.__timer_view_ptr + 1
+            else:                                                      rrb_ptr = self.__timer_view_ptr__ + 1
             if rrb_ptr != self.__timer_view_ptr__:
                 self.__view_switch__(rrb_ptr)
                 return True
