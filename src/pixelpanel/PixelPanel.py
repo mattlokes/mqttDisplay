@@ -56,7 +56,7 @@ class PixelPanel():
         if kwargs.get('debug', False):
              self.__buff__  = DebugBuffer(pin, self.__size__, **__kwargs__)
         elif self.mode == 'APA102':
-            from micropython_dotstar import DotStar
+            from ..adafruitdostar.micropython_dotstar import DotStar
             self.__buff__   = DotStar(pin, self.__size__, auto_write=False)
         else:
             from neopixel import NeoPixel

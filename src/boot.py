@@ -10,8 +10,7 @@ import gc
 gc.collect()
 
 from umqttsimple.umqttsimple import MQTTClient
-from display import *
-from view    import *
+from pixelpanel.display import *
 
 ssid = 'echoAP'
 password = 'M0nkeyM0nkey'
